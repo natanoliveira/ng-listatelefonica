@@ -1,2 +1,2 @@
 # ng-listatelefonica
- Lista telefonônica em Angular
+ Lista telefônica em Angular
