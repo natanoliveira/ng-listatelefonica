@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="listaTelefonica" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#37c362" />
+
+    <title>Angular - Treinamento</title>
+
+    <link media="screen" rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
+    <link media="screen" rel="stylesheet" href="css/app.css"/>
+
+  </head>
+  <body class="d-flex flex-column h-100" ng-controller="listaTelefonicaCtrl">
+    <main role="main" class="flex-shrink-0">
+      <div class="container">
+        <h3 class="mt-5"><img src="{{urlImages}}icon.png" width="20" /> {{title}}</h3>
+        <p class="lead">{{message}}
+        </p>
+        <!-- <p>
+          Use
+          <a href="/docs/4.6/examples/sticky-footer-navbar/">the sticky footer with a fixed navbar</a>
+          if need be, too.
+        </p> -->
+      </div>
+
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-9">
+            <input type="text" class="form-control form-control-sm mb-3" placeholder="Pesquisa" ng-model="criterioFiltro">
+            <table class="table table-hover table-striped">
+              <tr>
+                <th>#</th>
+                <th><a href="" ng-click="ordenarPor('nome')">Nome</a></th>
+                <th>Telefone</th>
+                <th>Operadora</th>
+              </tr>
+              <tr ng-class="{selecionado:contato.selecionado}" ng-repeat="contato in listaDeContatos | filter:criterioFiltro | orderBy: criterioOrdenacao:direcao">
+                <td>
+                  <input type="checkbox" ng-model="contato.selecionado" />
+                </td>
+                <td>{{contato.nome}}</td>
+                <td>{{contato.telefone}}</td>
+                <td>{{contato.operadora.nome}}</td>
+              </tr>
+            </table>
+            <!-- {{listaDeContatos}} -->
+            <!-- É válido: {{contatoForm.$valid}} <br />
+            É inválido:{{contatoForm.$invalid}} -->
+            <div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+              <div ng-message="required">Por favor, preencha o nome</div>
+              <div ng-message="minlength">Digite a quantidade mínima de 10 caracteres.</div>
+            </div>
+            <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger">
+              <div ng-message="required">Por favor, preencha o telefone</div>
+              <div ng-message="pattern">O campo telefone deve ter o formato 9xxxx-xxxx</div>
+            </div>
+        </div>
+
+          <div class="col-3">
+            <form name="contatoForm">
+              <input class="form-control form-control-sm mb-3" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true" name="nome" ng-minlength="10" />
+              <input class="form-control form-control-sm mb-3" type="text" ng-model="contato.telefone" placeholder="Telefone" ng-required="true" name="telefone" ng-pattern="/^\d{4,5}-\d{4}$/"
+/>
+              <select class="form-control form-control-sm" ng-model="contato.operadora" ng-options="operadora.nome +' ('+ (operadora.preco | currency) + ')' for operadora in listaDeOperadoras | orderBy:'nome'">
+                <option value="">-Tipo-</option>
+              </select>
+              <hr />
+              <button class="btn btn-primary mb-3 btn-sm btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Incluir contato</button>
+              <button class="btn btn-danger mb-3 btn-sm btn-block" ng-click="removerContatos(listaDeContatos)" ng-disabled="!temSelecionados(listaDeContatos)" ng-if="!temSelecionados(listaDeContatos)">Remover contato(s)</button>
+            </form>
+          </div>
+        </div>
+        {{message}}
+        <hr class="mt-3 mb-3" />
+      </div>
+    </main>
+    <div ng-include="'view/footer.html'"></div>
+  </body>
+</html>
+
+
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-messages.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/controllers/listaTelefonica.js"></script>
+<script src="js/values/configValue.js"></script>
